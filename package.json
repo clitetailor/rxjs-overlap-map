@@ -1,0 +1,22 @@
+{
+  "name": "rxjs-overlap-map",
+  "version": "0.0.1",
+  "description": "Alternative operator to RxJS switchMap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rxjs",
+    "operator",
+    "overlap"
+  ],
+  "author": "clitetailor",
+  "license": "MIT",
+  "peerDependencies": {
+    "rxjs": "^6.3.3"
+  },
+  "devDependencies": {
+    "rxjs": "^6.3.3"
+  }
+}
