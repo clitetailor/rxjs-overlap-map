@@ -2,3 +2,5 @@ pnpm-debug.log
 
 node_modules
 shrinkwrap.yaml
+
+dist

@@ -2,10 +2,14 @@
   "name": "rxjs-overlap-map",
   "version": "0.0.1",
   "description": "Alternative operator to RxJS switchMap",
-  "main": "index.js",
+  "main": "dist/rxjs-overlap-map.js",
   "scripts": {
+    "build": "rollup -c",
     "test": "jest"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "rxjs",
     "operator",
@@ -17,11 +21,13 @@
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
-    "babel-core": "^7.0.0-bridge.0",
+    "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^23.6.0",
     "regenerator-runtime": "^0.12.1",
+    "rollup": "^0.66.6",
+    "rollup-plugin-babel": "^3.0.7",
     "rxjs": "^6.3.3"
   },
   "repository": {
