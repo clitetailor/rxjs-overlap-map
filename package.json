@@ -4,7 +4,7 @@
   "description": "Alternative operator to RxJS switchMap",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "rxjs",
@@ -17,6 +17,19 @@
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.12.1",
     "rxjs": "^6.3.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clitetailor/rxjs-overlap-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/clitetailor/rxjs-overlap-map/issues"
+  },
+  "homepage": "https://github.com/clitetailor/rxjs-overlap-map#readme"
 }
