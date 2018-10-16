@@ -2,11 +2,13 @@
 
 ## Motivation
 
-RxJS switchMap operator switch to new inner Observable everytime it receives new value from source Observable. Meanwhile, when making multiple HTTP requests for searching or fetching data, we usually want to switch to the latest emitted inner Observable than waiting for the latest inner Observable to emit:
+RxJS switchMap operator switch to new inner Observable everytime it receives new value from source Observable. Meanwhile, when making multiple HTTP requests for searching or fetching data, we usually want to switch to the latest emitted inner Observable than waiting for the latest inner Observable to emit (\*):
 
 ```js
 clicks.pipe(overlapMap(() => ajax.get('/api')))
 ```
+
+> (\*): For example purpose, you should use `overlapMap` with `syncReplay` to archive the expected behavior. See [Optimization](#optimization) section for more information.
 
 ## Example
 
@@ -67,9 +69,43 @@ input$
 
 ## Optimization
 
-You can also use `overlapMap` with `syncReplay` (\*) for optimization:
+If you inspect streams with `tap` you may realize unexpected behavior:
+
+```jsx
+const origin = Date.now()
+
+const stream1 = of(1).pipe(
+  delay(100),
+  tap(() =>
+    console.log(`1: ${Math.round((Date.now() - origin) / 100)}`)
+  )
+)
+const stream3 = of(2).pipe(
+  delay(300),
+  tap(() =>
+    console.log(`3: ${Math.round((Date.now() - origin) / 100)}`)
+  )
+)
+const stream5 = of(3).pipe(
+  delay(500),
+  tap(() =>
+    console.log(`5: ${Math.round((Date.now() - origin) / 100)}`)
+  )
+)
+
+of(stream3, stream1, stream3, stream5)
+// Output:
+//  1: 1
+//  1: 2
+//  5: 5
+//  5: 10
+```
+
+It means each stream if lazy will be called twice. To optimize it you should use `overlapMap` with `syncReplay` (\*):
 
 > (\*): https://www.npmjs.com/package/rxjs-sync-operator
+
+The result will be expected:
 
 ```jsx
 const origin = Date.now()

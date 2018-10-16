@@ -25,10 +25,11 @@ test('should output 1, 5', done => {
     )
 })
 
-test('should execute sequentially', done => {
+test('should show unexpected behavior', done => {
   const origin = Date.now()
 
-  of(3, 1, 5, 6, 7, 3, 8, 9, 5)
+  //    v           v  v
+  of(3, 1, 5, 6, 7, 3, 5)
     .pipe(
       map(val => of(val).pipe(delay(val * 100))),
       overlapMap(stream => stream),
@@ -42,11 +43,15 @@ test('should execute sequentially', done => {
       values => {
         expect(values).toEqual([
           {
-            time: 2,
+            time: 2, // takeUntil 1s + delay 1s
             value: 1
           },
+          // {
+          //   time: 6, <- takeUntil 5s, being omitted
+          //   value: 3
+          // },
           {
-            time: 10,
+            time: 10, // takeUntil 5s + delay 5s
             value: 5
           }
         ])
