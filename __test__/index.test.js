@@ -5,7 +5,7 @@ import { overlapMap } from '../index'
 
 test('should output 1, 5', function(done) {
   const input$ = of(3, 1, 5).pipe(
-    map(val => of(val).pipe(delay(val * 1000)))
+    map(val => of(val).pipe(delay(val * 100)))
   )
 
   input$
