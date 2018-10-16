@@ -28,7 +28,8 @@
     "regenerator-runtime": "^0.12.1",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^3.0.7",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "rxjs-sync-operator": "^0.0.2-0"
   },
   "repository": {
     "type": "git",

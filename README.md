@@ -43,6 +43,19 @@ input$
 
 But the order is not preserved, the data may become stale.
 
+Using `concatMap` we can preserve the stream order:
+
+```jsx
+input$
+  .pipe(concatMap(stream => stream))
+  .subscribe(val => console.log(val))
+// Output: 3, 1, 5
+//         ^
+//         Late comming response
+```
+
+But a new stream always have to wait for the previous stream to finish to move to the next stream. Furthermore, late comming response cannot be omitted.
+
 Using `overlapMap`, we will get expected output:
 
 ```jsx
@@ -50,4 +63,31 @@ input$
   .pipe(overlapMap(stream => stream))
   .subscribe(val => console.log(val))
 // Output: 1, 5
+```
+
+## Optimization
+
+You can also use `overlapMap` with `syncReplay` (\*) for optimization:
+
+> (\*): https://www.npmjs.com/package/rxjs-sync-operator
+
+```jsx
+const origin = Date.now()
+
+of(3, 1, 5, 6, 7, 3, 8, 9, 5)
+  .pipe(
+    map(val => of(val).pipe(delay(val * 100))),
+    overlapMap(syncReplay()),
+    map(value => ({
+      time: Math.round((Date.now() - origin) / 100),
+      value
+    })),
+    reduceAll()
+  )
+  .subscribe(values => console.log(values))
+
+// Ouput:
+// [ { time: 1, value: 1 },
+//   { time: 3, value: 3 },
+//   { time: 5, value: 5 } ]
 ```
