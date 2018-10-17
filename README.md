@@ -102,13 +102,13 @@ clicks.pipe(overlapMap(() => interval(1000)))
 Give a full control of new coming stream over previous projected streams.
 
 ```ts
-declare function sequentialMap<T, R>(
+declare function sequentialMap<T extends Observable<any>, R>(
   project: (
-    prev: Observable<R>,
-    next: Observable<T>,
+    acc: Observable<R>,
+    next: T,
     index: number
   ) => Observable<R>
-): OperatorFunction<Observable<T>, R>
+): OperatorFunction<T, R>
 
 const overlapMap = callback => source =>
   source.pipe(

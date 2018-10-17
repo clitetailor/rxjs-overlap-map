@@ -21,7 +21,7 @@ export function overlapMap(callback) {
   return source =>
     source.pipe(
       map(callback),
-      sequentialMap((prev, next) => overlap(prev, next))
+      sequentialMap((acc, next) => overlap(acc, next))
     )
 }
 

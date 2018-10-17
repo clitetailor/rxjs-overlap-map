@@ -3,10 +3,11 @@
   "version": "0.0.2-1",
   "description": "Alternative operator to RxJS switchMap",
   "main": "dist/rxjs-overlap-map.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "coverage": "jest --coverage",
+    "coverage": "npm run build && jest --coverage",
     "deploy": "npm run coverage && npm run build && npm publish"
   },
   "files": [
@@ -24,7 +25,6 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^23.6.0",
     "regenerator-runtime": "^0.12.1",

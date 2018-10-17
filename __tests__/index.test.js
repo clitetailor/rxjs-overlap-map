@@ -1,7 +1,10 @@
-import { of, merge } from 'rxjs'
-import { delay, map, reduce, concat } from 'rxjs/operators'
+const { of, merge } = require('rxjs')
+const { delay, map, reduce, concat } = require('rxjs/operators')
 
-import { overlapMap, sequentialMap } from '../index'
+const {
+  overlapMap,
+  sequentialMap
+} = require('../dist/rxjs-overlap-map')
 
 const reduceAll = () =>
   reduce((acc, value) => acc.concat([value]), [])
@@ -62,7 +65,7 @@ describe('overlapMap', () => {
 })
 
 describe('sequentialMap', () => {
-  it('should work the same with `mergeMap`', done => {
+  it('should work the same as `mergeMap`', done => {
     const origin = Date.now()
 
     const mergeMap = callback => source =>
@@ -107,7 +110,7 @@ describe('sequentialMap', () => {
       )
   })
 
-  it('should work the same with `concatMap`', done => {
+  it('should work the same as `concatMap`', done => {
     const origin = Date.now()
 
     const concatMap = callback => source =>
