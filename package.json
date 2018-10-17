@@ -6,9 +6,9 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest",
-    "coverage": "npm run build && jest --coverage",
-    "deploy": "npm run coverage && npm run build && npm publish"
+    "test": "npm run build && mocha --opts mocha.opts",
+    "coverage": "npm run build && nyc mocha --opts mocha.opts",
+    "deploy": "npm run coverage && npm publish"
   },
   "files": [
     "dist"
@@ -26,8 +26,10 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.6.0",
-    "regenerator-runtime": "^0.12.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^3.0.7",
     "rxjs": "^6.3.3"

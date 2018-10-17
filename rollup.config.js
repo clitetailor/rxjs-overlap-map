@@ -18,6 +18,7 @@ export default {
       format: 'umd'
     }
   ],
+  cache: true,
   external: [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {})
