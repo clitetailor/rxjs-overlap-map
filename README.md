@@ -14,7 +14,7 @@ Given the following input Observable:
 
 ```jsx
 const input$ = of(3, 1, 5).pipe(
-  map(val => of(val).pipe(delay(val)))
+  map(val => of(val).pipe(delay(val * 1000)))
 )
 // Expected output: 1, 5
 ```
@@ -39,6 +39,9 @@ input$
   .pipe(mergeMap(stream => stream))
   .subscribe(val => console.log(val))
 // Output: 1, 3, 5
+//  1s -> 1
+//  3s -> 3
+//  5s -> 5
 ```
 
 But the order is not preserved, the data may become stale.
@@ -52,6 +55,9 @@ input$
 // Output: 3, 1, 5
 //         ^
 //         Late comming response
+//  3s -> 3
+//  4s -> 1
+//  9s -> 9
 ```
 
 But a new stream always have to wait for the previous stream to finish to move to the next stream. Furthermore, late comming response cannot be omitted.
@@ -62,5 +68,38 @@ Using `overlapMap`, we will get expected output:
 input$
   .pipe(overlapMap(stream => stream))
   .subscribe(val => console.log(val))
-// Output: 1, 5
+// Output:
+//  1s -> 1
+//  5s -> 5
+```
+
+## API Reference
+
+### overlap
+
+Flattens multiple Observables, previous values that being overlapped by the the next Observable will be ignored.
+
+```ts
+overlap(...observables: Array<ObservableInput<any>>): Observable<any>
+```
+
+### overlapMap
+
+Overlap previous streams with new comming stream.
+
+```jsx
+clicks.pipe(overlapMap(() => interval(1000)))
+```
+
+### sequentialMap
+
+Give a full control of new comming stream over previous projected streams.
+
+```jsx
+const overlapMap = sequentialMap((prev, next, index) =>
+  overlap(prev, next)
+)
+const mergeMap = sequentialMap((prev, next, index) =>
+  merge(prev, next)
+)
 ```
