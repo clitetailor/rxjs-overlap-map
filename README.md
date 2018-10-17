@@ -54,13 +54,13 @@ input$
   .subscribe(val => console.log(val))
 // Output: 3, 1, 5
 //         ^
-//         Late comming response
+//         Late coming response
 //  3s -> 3
 //  4s -> 1
 //  9s -> 9
 ```
 
-But a new stream always have to wait for the previous stream to finish to move to the next stream. Furthermore, late comming response cannot be omitted.
+But a new stream always have to wait for the previous stream to finish to move to the next stream. Furthermore, late coming response cannot be omitted.
 
 Using `overlapMap`, we will get expected output:
 
@@ -80,26 +80,51 @@ input$
 Flattens multiple Observables, previous values that being overlapped by the the next Observable will be ignored.
 
 ```ts
-overlap(...observables: Array<ObservableInput<any>>): Observable<any>
+declare function overlap<R>(
+  ...observables: Array<Observable<any>>
+): Observable<R>
 ```
 
 ### overlapMap
 
-Overlap previous streams with new comming stream.
+Overlap previous streams with new coming stream.
 
-```jsx
+```ts
+declare function overlap<T, R>(
+  project: (value: T, index: number) => Observable<R>
+): OperatorFunction<T, R>
+
 clicks.pipe(overlapMap(() => interval(1000)))
 ```
 
 ### sequentialMap
 
-Give a full control of new comming stream over previous projected streams.
+Give a full control of new coming stream over previous projected streams.
 
-```jsx
-const overlapMap = sequentialMap((prev, next, index) =>
-  overlap(prev, next)
-)
-const mergeMap = sequentialMap((prev, next, index) =>
-  merge(prev, next)
-)
+```ts
+declare function sequentialMap<T, R>(
+  project: (
+    prev: Observable<R>,
+    next: Observable<T>,
+    index: number
+  ) => Observable<R>
+): OperatorFunction<Observable<T>, R>
+
+const overlapMap = callback => source =>
+  source.pipe(
+    map(callback),
+    sequentialMap((prev, next) => overlap(prev, next))
+  )
+
+const mergeMap = callback => source =>
+  source.pipe(
+    map(callback),
+    sequentialMap((prev, next) => merge(prev, next))
+  )
+
+const concatMap = callback => source =>
+  source.pipe(
+    map(callback),
+    sequentialMap((prev, next) => prev.pipe(concat(next)))
+  )
 ```
