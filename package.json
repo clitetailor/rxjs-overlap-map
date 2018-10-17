@@ -5,7 +5,9 @@
   "main": "dist/rxjs-overlap-map.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "deploy": "npm run coverage && npm run build && npm publish"
   },
   "files": [
     "dist"

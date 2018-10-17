@@ -9,7 +9,7 @@ import {
 
 export function overlap(...sources) {
   return sources.reduce((acc, next) => {
-    const shared = next.pipe(share())
+    const shared = next.pipe(shareReplay())
     return acc.pipe(
       takeUntil(shared),
       concat(shared)
@@ -21,13 +21,14 @@ export function overlapMap(callback) {
   return source =>
     source.pipe(
       map(callback),
-      map(shareReplay()),
-      scan((prev, curr) =>
-        prev.pipe(
-          takeUntil(curr),
-          concat(curr)
-        )
-      ),
+      sequentialMap((prev, next) => overlap(prev, next))
+    )
+}
+
+export function sequentialMap(callback) {
+  return source =>
+    source.pipe(
+      scan(callback),
       switchMap(stream => stream)
     )
 }

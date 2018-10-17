@@ -1,6 +1,8 @@
+dist
+
 pnpm-debug.log
 
+coverage
 node_modules
-shrinkwrap.yaml
 
-dist
+shrinkwrap.yaml
