@@ -27,7 +27,8 @@ Using `switchMap` the output will be 5 only:
 input$
   .pipe(switchMap(stream => stream))
   .subscribe(val => console.log(val))
-// Output: 5
+// Output:
+//  5s -> 5
 ```
 
 It means that even 1 and 3 has been emitted, we still have to wait until the last stream emits 5 to receive the output.
@@ -40,11 +41,11 @@ input$
   .subscribe(val => console.log(val))
 // Output: 1, 3, 5
 //  1s -> 1
-//  3s -> 3
+//  3s -> 3 <- Late response is not omitted
 //  5s -> 5
 ```
 
-But the order is not preserved, the data may become stale.
+But late response is not omitted so that the order is not preserved, the data may become stale.
 
 Using `concatMap` we can preserve the stream order:
 
@@ -53,14 +54,12 @@ input$
   .pipe(concatMap(stream => stream))
   .subscribe(val => console.log(val))
 // Output: 3, 1, 5
-//         ^
-//         Late coming response
 //  3s -> 3
 //  4s -> 1
 //  9s -> 9
 ```
 
-But a new stream always have to wait for the previous stream to finish to move to the next stream. Furthermore, late coming response cannot be omitted.
+But a new stream always have to wait for the previous stream to finish to move to the next stream.
 
 Using `overlapMap`, we will get expected output:
 
