@@ -1,5 +1,6 @@
 const { of, merge } = require('rxjs')
 const { delay, map, reduce, concat } = require('rxjs/operators')
+const { expect } = require('chai')
 
 const {
   overlapMap,
@@ -21,7 +22,7 @@ describe('overlapMap', () => {
       )
       .subscribe(
         values => {
-          expect(values).toEqual([1, 5])
+          expect(values).to.deep.equal([1, 5])
         },
         reportError,
         done
@@ -43,7 +44,7 @@ describe('overlapMap', () => {
       )
       .subscribe(
         values => {
-          expect(values).toEqual([
+          expect(values).to.deep.equal([
             {
               time: 1,
               value: 1
@@ -86,7 +87,7 @@ describe('sequentialMap', () => {
       )
       .subscribe(
         values => {
-          expect(values).toEqual([
+          expect(values).to.deep.equal([
             {
               time: 1,
               value: 1
@@ -131,7 +132,7 @@ describe('sequentialMap', () => {
       )
       .subscribe(
         values => {
-          expect(values).toEqual([
+          expect(values).to.deep.equal([
             {
               time: 3,
               value: 3
